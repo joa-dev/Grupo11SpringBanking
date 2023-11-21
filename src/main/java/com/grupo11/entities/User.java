@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,21 +21,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "usuario")
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "contrasenia")
+    @Column(name = "password")
     private String password;
 
     private String email;
 
     private String dni;
 
-    @Column(name = "direccion")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "fecha_cumpleanios")
-    private Date birthday_date;
+    @Column(name = "birthdate")
+    private Date birthdate;
 
     // Fecha de creación y modificación (estado) de cada usuarios
     // TODO: Refactor

@@ -26,7 +26,7 @@ public class UserDto {
 
     private String address;
 
-    private Date birthday_date;
+    private Date birthdate;
 
     private LocalDateTime created_at;
 

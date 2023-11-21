@@ -14,7 +14,7 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         user.setAddress(dto.getAddress());
         user.setDni(dto.getDni());
-        user.setBirthday_date(dto.getBirthday_date());
+        user.setBirthdate(dto.getBirthdate());
         user.setEmail(dto.getEmail());
         user.setCreated_at(LocalDateTime.now());
         user.setUpdated_at(LocalDateTime.now());
@@ -28,7 +28,7 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setAddress(user.getAddress());
         dto.setEmail(user.getEmail());
-        dto.setBirthday_date(user.getBirthday_date());
+        dto.setBirthdate(user.getBirthdate());
         dto.setDni(user.getDni());
         dto.setCreated_at(user.getCreated_at());
         dto.setUpdated_at(user.getUpdated_at());
