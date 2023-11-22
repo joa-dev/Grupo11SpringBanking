@@ -55,12 +55,12 @@ public class UserController {
     }
 
 
-    // Modificar PARCIALMENTE un usuario (PATCH)
+    /*// Modificar PARCIALMENTE un usuario (PATCH)
 
-    @PatchMapping(value = "/{id}")
-    public String updateParcialUser(){
-        return "";
-    }
+    @PutMapping(value="/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user){
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateUser(id, user));
+    }*/
 
     // Eliminar un usuario
 
