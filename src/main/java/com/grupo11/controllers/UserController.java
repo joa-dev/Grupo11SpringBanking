@@ -37,7 +37,7 @@ public class UserController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(service.getUserById(id));
     }
 
@@ -49,9 +49,9 @@ public class UserController {
     }
 
     // Modificar TOTALMENTE un usuario (PUT)
-    @PutMapping(value = "/{id}")
-    public String updateFullUser(){
-        return "";
+    @PutMapping(value="/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user){
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateUser(id, user));
     }
 
 

@@ -4,11 +4,9 @@ import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,13 +23,14 @@ public class UserService {
         return users;
     }
 
-    public User getUserById(Long id){
+    public UserDto getUserById(Long id){
         User user = repository.findById(id).get();
         user.setPassword("******");
-        return user;
+        return UserMapper.userToDto(user);
     }
 
     public UserDto createUser(UserDto user){
+        // TODO: agregar validacion de email existente
         User entity = UserMapper.dtoTouser(user);
         User entitySaved = repository.save(entity);
         user = UserMapper.userToDto(entitySaved);
@@ -48,5 +47,48 @@ public class UserService {
         }
     }
 
+    public UserDto updateUser(Long id, UserDto dto) {
+        if (repository.existsById(id)){
+            User userToModify = repository.findById(id).get();
+            // Validar qué datos no vienen en null para setearlos al objeto ya creado
 
+            // Logica del Patch
+            if (dto.getUsername() != null){
+                userToModify.setUsername(dto.getUsername());
+            }
+
+            // TODO: agregar validacion de email existente
+            if (dto.getEmail() != null){
+                userToModify.setEmail(dto.getEmail());
+            }
+
+            if (dto.getPassword() != null){
+                userToModify.setPassword(dto.getPassword());
+            }
+
+            if (dto.getDni() != null){
+                userToModify.setDni(dto.getDni());
+            }
+
+            if (dto.getAddress() != null){
+                userToModify.setAddress(dto.getAddress());
+            }
+            if (dto.getBirthdate() != null){
+                userToModify.setBirthdate(dto.getBirthdate());
+            }
+
+            userToModify.setUpdated_at(LocalDateTime.now());
+
+            User userModified = repository.save(userToModify);
+
+            return UserMapper.userToDto(userModified);
+        }
+
+        return null;
+    }
+
+    // Validar que existan usuarios unicos por mail
+    public User validateUserByEmail(UserDto dto){
+        return repository.findByEmail(dto.getEmail());
+    }
 }
