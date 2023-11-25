@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 public class AccountDto {
     private Long id;
     private AccountType type;
-    private String name;
     private String cbu;
     private String alias;
     private BigDecimal amount;

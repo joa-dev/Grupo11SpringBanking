@@ -21,7 +21,6 @@ public class Account {
     private Long id;
     @Column(name = "tipo_cuenta")
     private AccountType type;
-    private String name;
     private String cbu;
     private String alias;
     @Column(name = "monto")
@@ -30,5 +29,5 @@ public class Account {
     private LocalDateTime created_at;
     @Column(name = "fecha_modificacion")
     private LocalDateTime updated_at;
-    //  private User owner;
+
 }
