@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "cuentas")
@@ -29,5 +30,11 @@ public class Account {
     private LocalDateTime created_at;
     @Column(name = "fecha_modificacion")
     private LocalDateTime updated_at;
-
+    @ManyToOne
+    @Column(name = "titular")
+    private User owner;
+   // @OneToMany(fetch = FetchType.EAGER,mappedBy = "transmitter",cascade=CascadeType.ALL, orphanRemoval = true)
+   // private List<Transfer> transfers;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "investor",cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Investment> investments;
 }
