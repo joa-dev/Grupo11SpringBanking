@@ -18,7 +18,7 @@ public class InvestmentService {
         this.repository = repository;
     }
 
-    public List<Investment> getInvestments(){
+    public List<Investment> getAllInvestments(){
         List<Investment> investment = repository.findAll();
         return investment;
     }

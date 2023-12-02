@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InvestmentRepository extends JpaRepository<Investment, Long> {
-
-    //Investment findByAccount(Account cuenta); Falta cuenta
 }
