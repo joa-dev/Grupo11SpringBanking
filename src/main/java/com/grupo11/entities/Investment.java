@@ -22,7 +22,7 @@ public class Investment {
     private long id;
 
     @ManyToOne
-    @Column(name = "cuenta")
+    @JoinColumn(name = "cuenta_id")
     private Account account;
 
     @Column(name = "monto")
