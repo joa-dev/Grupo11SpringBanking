@@ -16,6 +16,8 @@ public class InvestmentDto {
 
     private long id;
 
+    //private Account account; Falta cuenta
+
     private BigDecimal amount;
 
     private double investmentInterest;
@@ -25,4 +27,5 @@ public class InvestmentDto {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
 }
