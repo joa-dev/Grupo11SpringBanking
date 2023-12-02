@@ -23,8 +23,15 @@ public class InvestmentMapper {
 
     public static InvestmentDto investmentToDto(Investment investment){
         InvestmentDto dto = new InvestmentDto();
+        dto.setAccountId(investment.getAccount().getId());
+        dto.setInvestmentInterest(investment.getInvestmentInterest());
+        dto.setRetornsTime(investment.getRetornsTime());
+
         dto.setAmount(investment.getAmount());
+        dto.setBalance(investment.getBalance());
+
         dto.setStartDate(investment.getStartDate());
+        dto.setEndDate(investment.getEndDate());
         return dto;
     }
 
