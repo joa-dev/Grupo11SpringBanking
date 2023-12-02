@@ -1,5 +1,6 @@
 package com.grupo11.entities.dtos;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ public class InvestmentDto {
     //private Account account; Falta cuenta
 
     private BigDecimal amount;
+
+    private BigDecimal balance;
 
     private double investmentInterest;
 
