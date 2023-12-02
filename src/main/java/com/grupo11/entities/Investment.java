@@ -21,11 +21,15 @@ public class Investment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    //@Column(name = "cuenta")
-    //private Account account; Falta cuenta
+    @ManyToOne
+    @Column(name = "cuenta")
+    private Account account;
 
     @Column(name = "monto")
     private BigDecimal amount;
+
+    @Column(name="saldo")
+    private BigDecimal balance;
 
     @Column(name = "interes")
     private final double investmentInterest = 10;
