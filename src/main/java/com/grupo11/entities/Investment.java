@@ -23,7 +23,7 @@ public class Investment {
 
     @ManyToOne
     @Column(name = "cuenta")
-    private Account account;
+    private Account investor;
 
     @Column(name = "monto")
     private BigDecimal amount;
