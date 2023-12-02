@@ -21,6 +21,9 @@ public class Investment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    //@Column(name = "cuenta")
+    //private Account account; Falta cuenta
+
     @Column(name = "monto")
     private BigDecimal amount;
 
