@@ -23,8 +23,8 @@ public class InvestmentController {
 // Obtener una lista de inversiones realizadas
 
     @GetMapping
-    public ResponseEntity<List<Investment>> getInvestment(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getInvestments());
+    public ResponseEntity<List<Investment>> getAllInvestment(){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAllInvestments());
     }
 
 }
