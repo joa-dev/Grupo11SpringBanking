@@ -32,7 +32,7 @@ public class Investment {
     private BigDecimal balance;
 
     @Column(name = "interes")
-    private final double investmentInterest = 10;
+    private final double investmentInterest = 10.00;
 
     private final int retornsTime = 30; // dias para el retorno
 

@@ -29,7 +29,7 @@ public class InvestmentService {
         this.accountRepository = accountsRepository;
     }
 
-    public List<Investment> getInvestments(){
+    public List<Investment> getAllInvestments(){
         List<Investment> investment = investmentRepository.findAll();
         return investment;
     }
