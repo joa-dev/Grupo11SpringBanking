@@ -22,8 +22,8 @@ public class Investment {
     private long id;
 
     @ManyToOne
-    @Column(name = "cuenta")
-    private Account investor;
+    @JoinColumn(name = "cuenta_id")
+    private Account account;
 
     @Column(name = "monto")
     private BigDecimal amount;
