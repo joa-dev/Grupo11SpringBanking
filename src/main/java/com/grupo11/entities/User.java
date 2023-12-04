@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -40,6 +41,6 @@ public class User {
 
     private LocalDateTime updated_at;
 
-    // TODO: refactor
-    //private List<Account> accounts;
+    @OneToMany(mappedBy = "owner", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts;
 }

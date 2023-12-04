@@ -6,6 +6,8 @@ import com.grupo11.entities.enums.AccountType;
 import com.grupo11.mappers.AccountMapper;
 import com.grupo11.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,8 @@ public class AccountService {
     }
 
     public AccountDto createAccount(AccountDto dto) {
-        dto.setType(AccountType.CAJA_AHORRO_PESOS);
+       // dto.setType(AccountType.CAJA_AHORRO_PESOS);
+        dto.setAmount(BigDecimal.ZERO);
         Account newAccount = AccountMapper.dtoToAccount(dto);
         return AccountMapper.accountToDto(repository.save(newAccount));
 
