@@ -17,7 +17,7 @@ public class InvestmentDto {
 
     private long id;
 
-    //private Account account; Falta cuenta
+    private long accountId;
 
     private BigDecimal amount;
 
