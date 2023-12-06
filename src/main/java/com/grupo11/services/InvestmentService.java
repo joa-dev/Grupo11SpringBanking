@@ -42,7 +42,7 @@ public class InvestmentService {
         Account originAccount = existAccount(dto);
 
         //comprobar que la cuenta tenga fondos suficientes
-        hasAccountFounds(originAccount,dto);
+         hasAccountFounds(originAccount,dto);
 
         //extraer dinero de la cuenta
         originAccount.setAmount(originAccount.getAmount().subtract(dto.getAmount()));
