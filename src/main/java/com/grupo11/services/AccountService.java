@@ -1,9 +1,11 @@
 package com.grupo11.services;
 
 import com.grupo11.entities.Account;
+import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.AccountDto;
 import com.grupo11.entities.enums.AccountType;
 import com.grupo11.mappers.AccountMapper;
+import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +39,11 @@ public class AccountService {
         dto.setAmount(BigDecimal.ZERO);
         Account newAccount = AccountMapper.dtoToAccount(dto);
         return AccountMapper.accountToDto(repository.save(newAccount));
-
     }
 
     public AccountDto updateAccount(Long id, AccountDto dto) {
-        if (repository.existsById(id)) {
-            Account acc = repository.findById(id).get();
+        if (repository.existsById(dto.getId())) {
+            Account acc = repository.findById(dto.getId()).get();
             if (dto.getAlias() != null) {
                 acc.setAlias(dto.getAlias());
             }
@@ -57,13 +58,12 @@ public class AccountService {
             if (dto.getAmount() != null) {
                 acc.setAmount(dto.getAmount());
             }
-
-            return AccountMapper.accountToDto(acc);
+            Account accountModified = repository.save(acc);
+            return AccountMapper.accountToDto(accountModified);
 
         } else {
             return null;
         }
-
     }
 
     public String deleteAccount(Long id) {
@@ -73,6 +73,5 @@ public class AccountService {
         } else {
             return "No se pudo eliminar la cuenta";
         }
-
     }
 }
