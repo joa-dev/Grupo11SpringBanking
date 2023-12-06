@@ -23,6 +23,7 @@ public class InvestmentService {
 
     private InvestmentRepository investmentRepository;
     private AccountRepository accountRepository;
+    LocalDate fechaInicio=null;
 
     public InvestmentService (InvestmentRepository investmentRepository, AccountRepository accountsRepository) {
         this.investmentRepository = investmentRepository;
@@ -36,33 +37,27 @@ public class InvestmentService {
 
     @Transactional
     public InvestmentDto performInvestment(InvestmentDto dto){
+
         //comprobar que la cuenta existe
-        Account originAccount = accountRepository.findById(dto.getAccountId())
-                .orElseThrow(() -> new AccountNotFoundException("Cuenta no encontada con Id: " + dto.getAccountId()));
+        Account originAccount = existAccount(dto);
 
         //comprobar que la cuenta tenga fondos suficientes
-        if (originAccount.getAmount().compareTo(dto.getAmount()) < 0) {
-            throw new InsuficientFoundsException("Fondos insuficientes en la cuenta con Id: " + dto.getId());
-        }
+        hasAccountFounds(originAccount,dto);
 
         //extraer dinero de la cuenta
         originAccount.setAmount(originAccount.getAmount().subtract(dto.getAmount()));
+
         // Guardar cambios en la cuenta
         accountRepository.save(originAccount);
 
         //Crear Inversion
-        Investment inversion = new Investment();
-        inversion.setAmount(dto.getAmount());
-        inversion.setAccount(originAccount);
+        Investment inversion = createInvestment(originAccount,dto);
 
-        LocalDate fechaInicio = LocalDate.now();
-        inversion.setStartDate(fechaInicio);
-        inversion.setEndDate(fechaInicio.plusDays(30));
+        //Setear interes segun el req.Body
+        setInvestmentInterest(inversion);
 
-        //realizar calculo
-        BigDecimal interes =BigDecimal.valueOf(inversion.getInvestmentInterest()/100);
-        BigDecimal totalInversion = dto.getAmount().multiply(interes).add(dto.getAmount());
-        inversion.setBalance(totalInversion);
+        //Calcula las ganancias y las seteaen la cuenta
+        setInterestEarned(inversion,dto);
 
         //guardar inversion
         investmentRepository.save(inversion);
@@ -71,4 +66,60 @@ public class InvestmentService {
         return InvestmentMapper.investmentToDto(inversion);
     }
 
+    //------METODOS---------
+
+    //Chequeo si la cuenta existe
+        private Account existAccount(InvestmentDto dto){
+            Account originAccount = accountRepository.findById(dto.getAccountId())
+                    .orElseThrow(() -> new AccountNotFoundException("Cuenta no encontada con Id: " + dto.getAccountId()));
+            return originAccount;
+        }
+
+        //Chequeoo si tiene fondos
+        private void hasAccountFounds(Account originAccount, InvestmentDto dto ){
+            if (originAccount.getAmount().compareTo(dto.getAmount()) < 0) {
+                throw new InsuficientFoundsException("Fondos insuficientes en la cuenta con Id: " + dto.getAccountId());
+            }
+        }
+
+        //Crea la inversion
+        private Investment createInvestment(Account originAccount,InvestmentDto dto){
+            Investment inversion = new Investment();
+            inversion.setAmount(dto.getAmount());
+            inversion.setAccount(originAccount);
+            inversion.setInvestmentPeriod(dto.getInvestmentPeriod());
+             fechaInicio = LocalDate.now();
+            inversion.setStartDate(fechaInicio);
+
+            return inversion;
+        }
+
+        // Setea el interes según cantidad de dias a invertir
+        private void setInvestmentInterest(Investment inversion){
+            int periodoInversion = inversion.getInvestmentPeriod();
+
+            if( (periodoInversion >0) & (periodoInversion<=30)){
+                inversion.setInvestmentInterest(10);
+                inversion.setEndDate(fechaInicio.plusDays(30));
+            }
+            if((periodoInversion >30) & (periodoInversion<=60)){
+                inversion.setInvestmentInterest(20);
+                inversion.setEndDate(fechaInicio.plusDays(60));
+            }
+            if((periodoInversion >60) & (periodoInversion<=90)){
+                inversion.setInvestmentInterest(30);
+                inversion.setEndDate(fechaInicio.plusDays(90));
+            }
+            if(periodoInversion>90){
+                inversion.setInvestmentInterest(50);
+                inversion.setEndDate(fechaInicio.plusDays(100));
+            }
+        }
+
+        //Calcula el interes ganado segun los dias
+    private void setInterestEarned(Investment inversion, InvestmentDto dto){
+        BigDecimal interes =BigDecimal.valueOf(inversion.getInvestmentInterest()/100);
+        BigDecimal totalInversion = dto.getAmount().multiply(interes).add(dto.getAmount());
+        inversion.setBalance(totalInversion);
+    }
 }
