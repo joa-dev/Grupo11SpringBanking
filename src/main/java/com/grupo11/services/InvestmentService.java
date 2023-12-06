@@ -42,7 +42,7 @@ public class InvestmentService {
 
         //comprobar que la cuenta tenga fondos suficientes
         if (originAccount.getAmount().compareTo(dto.getAmount()) < 0) {
-            throw new InsuficientFoundsException("Fondos insuficientes en la cuenta con Id: " + dto.getId());
+            throw new InsuficientFoundsException("Fondos insuficientes en la cuenta con Id: " + dto.getAccountId());
         }
 
         //extraer dinero de la cuenta
