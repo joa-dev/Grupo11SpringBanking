@@ -42,8 +42,8 @@ public class AccountService {
     }
 
     public AccountDto updateAccount(Long id, AccountDto dto) {
-        if (repository.existsById(dto.getId())) {
-            Account acc = repository.findById(dto.getId()).get();
+        if (repository.existsById(id)) {
+            Account acc = repository.findById(id).get();
             if (dto.getAlias() != null) {
                 acc.setAlias(dto.getAlias());
             }
