@@ -25,7 +25,7 @@ public class InvestmentDto {
 
     private double investmentInterest;
 
-    private int investmentPeriod;
+    private Integer investmentPeriod;
 
     private LocalDate startDate;
 

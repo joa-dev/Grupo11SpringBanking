@@ -35,7 +35,7 @@ public class Investment {
     private  double investmentInterest;
 
     @Column(name="periodo_inversion")
-    private  int investmentPeriod; // dias para el retorno
+    private  Integer investmentPeriod; // dias para el retorno
 
     @Column(name = "fecha_creacion")
     private LocalDate startDate;
