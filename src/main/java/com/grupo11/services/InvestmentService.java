@@ -87,8 +87,15 @@ public class InvestmentService {
             Investment inversion = new Investment();
             inversion.setAmount(dto.getAmount());
             inversion.setAccount(originAccount);
-            inversion.setInvestmentPeriod(dto.getInvestmentPeriod());
-             fechaInicio = LocalDate.now();
+
+            //De no venir el atributo investmentPeriod
+            //setea el atributo a 30
+            if(dto.getInvestmentPeriod()==null){
+                inversion.setInvestmentPeriod(30);
+            }else{
+                inversion.setInvestmentPeriod(dto.getInvestmentPeriod());
+            }
+            fechaInicio = LocalDate.now();
             inversion.setStartDate(fechaInicio);
 
             return inversion;
