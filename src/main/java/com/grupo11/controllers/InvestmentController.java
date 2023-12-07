@@ -26,7 +26,7 @@ public class InvestmentController {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllInvestments());
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<InvestmentDto> performInvestment(@RequestBody InvestmentDto inversion){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.performInvestment(inversion));
     }
