@@ -15,6 +15,8 @@ public class AccountMapper {
         dto.setCbu(account.getCbu());
         dto.setAlias(account.getAlias());
         dto.setAmount(account.getAmount());
+        dto.setCreated_at(account.getCreated_at());
+        dto.setUpdated_at(account.getUpdated_at());
         return dto;
     }
     public /*static*/ Account dtoToAccount(AccountDto dto){
@@ -23,6 +25,8 @@ public class AccountMapper {
         account.setType(dto.getType());
         account.setCbu(dto.getCbu() );
         account.setAmount(dto.getAmount());
+        account.setCreated_at(dto.getCreated_at());
+        account.setUpdated_at(dto.getUpdated_at());
         return account;
     }
 }

@@ -10,6 +10,7 @@ import com.grupo11.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,9 @@ public class AccountService {
     public AccountDto createAccount(AccountDto dto) {
        // dto.setType(AccountType.CAJA_AHORRO_PESOS);
         dto.setAmount(BigDecimal.ZERO);
+        dto.setCreated_at(LocalDateTime.now());
         Account newAccount = AccountMapper.dtoToAccount(dto);
+
         return AccountMapper.accountToDto(repository.save(newAccount));
     }
 
@@ -58,6 +61,9 @@ public class AccountService {
             if (dto.getAmount() != null) {
                 acc.setAmount(dto.getAmount());
             }
+
+            acc.setUpdated_at(LocalDateTime.now());
+
             Account accountModified = repository.save(acc);
             return AccountMapper.accountToDto(accountModified);
 
