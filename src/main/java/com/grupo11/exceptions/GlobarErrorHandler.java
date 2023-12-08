@@ -12,7 +12,7 @@ public class GlobarErrorHandler {
     Mejorar el manejo de excepciones personalizando los mensajes de error
     y retornando códigos de estado HTTP apropiados.*/
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<?> manejarAccountNotFoundException(AccountNotFoundException exception, WebRequest webRequest){
+    public ResponseEntity<?> manejarAccountNotFoundException(AccountNotFoundException exception, WebRequest webRequest) {
         ResponseExceptionEntity response = new ResponseExceptionEntity();
         response.setError(HttpStatus.NOT_FOUND);
         response.setMessage(exception.getMessage());
@@ -20,7 +20,7 @@ public class GlobarErrorHandler {
     }
 
     @ExceptionHandler(InsuficientFoundsException.class)
-    public ResponseEntity<?> manejarInsuficientFoundsException(InsuficientFoundsException exception, WebRequest webRequest){
+    public ResponseEntity<?> manejarInsuficientFoundsException(InsuficientFoundsException exception, WebRequest webRequest) {
         ResponseExceptionEntity response = new ResponseExceptionEntity();
         response.setError(HttpStatus.BAD_REQUEST);
         response.setMessage(exception.getMessage());
@@ -28,11 +28,26 @@ public class GlobarErrorHandler {
     }
 
     @ExceptionHandler(TransferNotFoundException.class)
-    public ResponseEntity<?> manejarTransferNotFoundException(TransferNotFoundException exception, WebRequest webRequest){
+    public ResponseEntity<?> manejarTransferNotFoundException(TransferNotFoundException exception, WebRequest webRequest) {
         ResponseExceptionEntity response = new ResponseExceptionEntity();
         response.setError(HttpStatus.NOT_FOUND);
         response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserEmailDuplicated.class)
+    public ResponseEntity<?> manejarUserEmailDuplicated(UserEmailDuplicated exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.BAD_REQUEST);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserDniDuplicated.class)
+    public ResponseEntity<?> manejarUserDniDuplicated(UserDniDuplicated exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.BAD_REQUEST);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
