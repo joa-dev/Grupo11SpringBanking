@@ -37,7 +37,9 @@ public class AccountService {
 
     public AccountDto createAccount(AccountDto dto) {
        // dto.setType(AccountType.CAJA_AHORRO_PESOS);
-        dto.setAmount(BigDecimal.ZERO);
+        if (dto.getAmount() == null) {
+            dto.setAmount(BigDecimal.ZERO);
+        }
         dto.setCreated_at(LocalDateTime.now());
         Account newAccount = AccountMapper.dtoToAccount(dto);
 
