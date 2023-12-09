@@ -2,6 +2,8 @@ package com.grupo11.services;
 
 import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
+import com.grupo11.exceptions.UserDniDuplicated;
+import com.grupo11.exceptions.UserEmailDuplicated;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,9 +31,16 @@ public class UserService {
         return UserMapper.userToDto(user);
     }
 
+
+
     public UserDto createUser(UserDto user){
-        // TODO: agregar validacion de email existente
         User entity = UserMapper.dtoTouser(user);
+        if (validateUserByEmail(user) != null) {
+            throw new UserEmailDuplicated("Email duplicado");
+        }
+        if (validateUserByDni(user) != null) {
+            throw new UserDniDuplicated("DNI duplicado");
+        }
         User entitySaved = repository.save(entity);
         user = UserMapper.userToDto(entitySaved);
         user.setPassword("******");
@@ -90,5 +99,9 @@ public class UserService {
     // Validar que existan usuarios unicos por mail
     public User validateUserByEmail(UserDto dto){
         return repository.findByEmail(dto.getEmail());
+    }
+
+    public User validateUserByDni(UserDto dto){
+        return repository.findByDni(dto.getDni());
     }
 }
