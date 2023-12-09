@@ -2,9 +2,13 @@ package com.grupo11.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 @ControllerAdvice
 public class GlobarErrorHandler {
@@ -49,5 +53,25 @@ public class GlobarErrorHandler {
         response.setError(HttpStatus.BAD_REQUEST);
         response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object>manejarValidationErrors(MethodArgumentNotValidException error){
+        List<FieldError> fieldErrors = error.getBindingResult().getFieldErrors();
+
+        StringBuilder errorMessage = new StringBuilder("Errores de validación: ");
+
+        for (FieldError fieldError : fieldErrors) {
+            if (fieldError.getRejectedValue() != null) {
+                errorMessage.append("Campo '").append(fieldError.getField()).append("' con valor '")
+                        .append(fieldError.getRejectedValue()).append("': ");
+            } else {
+                errorMessage.append("Campo '").append(fieldError.getField()).append("': ");
+            }
+            errorMessage.append(fieldError.getDefaultMessage()).append(" ");
+        }
+
+        return ResponseEntity.badRequest().body(errorMessage);
+
     }
 }
