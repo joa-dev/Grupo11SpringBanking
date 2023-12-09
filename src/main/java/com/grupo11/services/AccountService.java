@@ -3,6 +3,7 @@ package com.grupo11.services;
 import com.grupo11.entities.Account;
 import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.AccountDto;
+import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.entities.enums.AccountType;
 import com.grupo11.mappers.AccountMapper;
 import com.grupo11.mappers.UserMapper;
@@ -82,4 +83,9 @@ public class AccountService {
             return "No se pudo eliminar la cuenta";
         }
     }
+
+    public Account validateAccountByAlias(AccountDto dto){
+        return repository.findByAlias(dto.getAlias());
+    }
+
 }
