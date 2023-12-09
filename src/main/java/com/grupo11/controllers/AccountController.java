@@ -2,6 +2,7 @@ package com.grupo11.controllers;
 
 import com.grupo11.entities.dtos.AccountDto;
 import com.grupo11.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto account){
+    public ResponseEntity<AccountDto> createAccount(@RequestBody @Valid AccountDto account){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody AccountDto account){
+    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long id, @RequestBody @Valid AccountDto account){
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAccount(id, account));
     }
 

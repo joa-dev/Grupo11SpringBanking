@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Entity
 @Table(name = "cuentas")
@@ -20,8 +20,10 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "tipo_cuenta")
     private AccountType type;
+
     private String cbu;
     private String alias;
     @Column(name = "monto")
