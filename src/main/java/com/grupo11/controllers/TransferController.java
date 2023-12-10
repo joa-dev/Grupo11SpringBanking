@@ -2,9 +2,11 @@ package com.grupo11.controllers;
 
 import com.grupo11.entities.dtos.TransferDto;
 import com.grupo11.services.TransferService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class TransferController {
 
 
     @PostMapping
-    public ResponseEntity<TransferDto> performTransfer(@RequestBody TransferDto dto){
+    public ResponseEntity<TransferDto> performTransfer(@RequestBody @Valid TransferDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.performTransfer(dto));
     }
 }

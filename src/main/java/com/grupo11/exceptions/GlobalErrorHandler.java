@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.List;
 
 @ControllerAdvice
-public class GlobarErrorHandler {
+public class GlobalErrorHandler {
     /*2)Manejo de Excepciones:
     Mejorar el manejo de excepciones personalizando los mensajes de error
     y retornando códigos de estado HTTP apropiados.*/
