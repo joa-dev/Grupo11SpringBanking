@@ -3,10 +3,14 @@ package com.grupo11.services;
 import com.grupo11.entities.Account;
 import com.grupo11.entities.Investment;
 import com.grupo11.entities.User;
+import com.grupo11.entities.dtos.AccountDto;
 import com.grupo11.entities.dtos.InvestmentDto;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.exceptions.AccountNotFoundException;
 import com.grupo11.exceptions.InsuficientFoundsException;
+import com.grupo11.exceptions.InvestmentNotFoundException;
+import com.grupo11.exceptions.NegativeInvestmentException;
+import com.grupo11.mappers.AccountMapper;
 import com.grupo11.mappers.InvestmentMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.AccountRepository;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvestmentService {
@@ -30,9 +35,21 @@ public class InvestmentService {
         this.accountRepository = accountsRepository;
     }
 
-    public List<Investment> getAllInvestments(){
-        List<Investment> investment = investmentRepository.findAll();
-        return investment;
+    public List<InvestmentDto> getAllInvestments() {
+       List<InvestmentDto>investmentDtoList = investmentRepository.findAll().stream()
+                .map(InvestmentMapper::investmentToDto)
+                .collect(Collectors.toList());
+       if(investmentDtoList.isEmpty()){
+        throw new InvestmentNotFoundException("No se encontraron inversiones.");
+       }
+           return investmentDtoList;
+    }
+    public InvestmentDto getInvestmentById(Long id) {
+        if(!investmentRepository.existsById(id)){
+            throw new InvestmentNotFoundException("No se encontró la inversión con ID: "+id);
+        }
+        Investment investment = investmentRepository.findById(id).get();
+        return InvestmentMapper.investmentToDto(investment);
     }
 
     @Transactional
@@ -85,6 +102,10 @@ public class InvestmentService {
         //Crea la inversion
         private Investment createInvestment(Account originAccount,InvestmentDto dto){
             Investment inversion = new Investment();
+            BigDecimal amount = dto.getAmount();
+            if(amount.intValue()<=0){
+                throw new NegativeInvestmentException("La inversión debe ser mayor a 0,00 (CERO). ");
+            }
             inversion.setAmount(dto.getAmount());
             inversion.setAccount(originAccount);
 
@@ -105,7 +126,7 @@ public class InvestmentService {
         private void setInvestmentInterest(Investment inversion){
             int periodoInversion = inversion.getInvestmentPeriod();
 
-            if( (periodoInversion >0) & (periodoInversion<=30)){
+            if( (periodoInversion >=0) & (periodoInversion<=30)){
                 inversion.setInvestmentInterest(10);
                 inversion.setEndDate(fechaInicio.plusDays(30));
             }
@@ -120,6 +141,9 @@ public class InvestmentService {
             if(periodoInversion>90){
                 inversion.setInvestmentInterest(50);
                 inversion.setEndDate(fechaInicio.plusDays(100));
+            }
+            if(periodoInversion<0){
+                throw new NegativeInvestmentException("El período de tiempo no puede ser negativo.");
             }
         }
 

@@ -29,7 +29,7 @@ public class UserController {
     // Obtener una lista de usuarios registrados
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers(){
+    public ResponseEntity<List<UserDto>> getUsers(){
         return ResponseEntity.status(HttpStatus.OK).body(service.getUsers());
     }
 

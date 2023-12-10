@@ -4,12 +4,14 @@ import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.exceptions.UserDniDuplicated;
 import com.grupo11.exceptions.UserEmailDuplicated;
+import com.grupo11.mappers.InvestmentMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -20,9 +22,10 @@ public class UserService {
         this.repository = repository;
     }
 
-    public List<User> getUsers(){
-        List<User> users = repository.findAll();
-        return users;
+    public List<UserDto> getUsers(){
+        return repository.findAll().stream()
+                .map(UserMapper::userToDto)
+                .collect(Collectors.toList());
     }
 
     public UserDto getUserById(Long id){
