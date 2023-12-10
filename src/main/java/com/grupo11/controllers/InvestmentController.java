@@ -6,6 +6,7 @@ import com.grupo11.entities.dtos.InvestmentDto;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.services.InvestmentService;
 import com.grupo11.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class InvestmentController {
 
 
     @PostMapping
-    public ResponseEntity<InvestmentDto> performInvestment(@RequestBody InvestmentDto inversion){
+    public ResponseEntity<InvestmentDto> performInvestment(@RequestBody @Valid InvestmentDto inversion){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.performInvestment(inversion));
     }
 

@@ -1,8 +1,8 @@
 package com.grupo11.controllers;
 
-import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,13 +44,13 @@ public class UserController {
     // Crear/Registrar un usuario
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(user));
     }
 
     // Modificar TOTALMENTE un usuario (PUT)
     @PutMapping(value="/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto user){
+    public ResponseEntity<UserDto> updateUser(@PathVariable @Valid Long id, @RequestBody UserDto user){
         return ResponseEntity.status(HttpStatus.OK).body(service.updateUser(id, user));
     }
 
