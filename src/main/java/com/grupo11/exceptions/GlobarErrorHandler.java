@@ -38,6 +38,20 @@ public class GlobarErrorHandler {
         response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(InvestmentNotFoundException.class)
+    public ResponseEntity<?> manejarInvestmentNotFoundException(InvestmentNotFoundException exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.NOT_FOUND);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(NegativeInvestmentException.class)
+    public ResponseEntity<?> manejarNegativeInvestment(NegativeInvestmentException exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.BAD_REQUEST);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UserEmailDuplicated.class)
     public ResponseEntity<?> manejarUserEmailDuplicated(UserEmailDuplicated exception, WebRequest webRequest) {
