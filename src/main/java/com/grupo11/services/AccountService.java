@@ -44,20 +44,20 @@ public class AccountService {
     public AccountDto updateAccount(Long id, AccountDto dto) {
         if (repository.existsById(id)) {
             Account acc = repository.findById(id).get();
-            if (dto.getAlias() != null) {
+          //  if (dto.getAlias() != null) {
                 acc.setAlias(dto.getAlias());
-            }
+          //  }
 
-            if (dto.getType() != null) {
+         //   if (dto.getType() != null) {
                 acc.setType(dto.getType());
-            }
+          //  }
 
-            if (dto.getCbu() != null) {
+          //  if (dto.getCbu() != null) {
                 acc.setCbu(dto.getCbu());
-            }
-            if (dto.getAmount() != null) {
+//}
+          //  if (dto.getAmount() != null) {
                 acc.setAmount(dto.getAmount());
-            }
+//}
             Account accountModified = repository.save(acc);
             return AccountMapper.accountToDto(accountModified);
 
