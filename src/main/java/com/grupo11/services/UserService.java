@@ -4,6 +4,7 @@ import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
 import com.grupo11.exceptions.UserDniDuplicated;
 import com.grupo11.exceptions.UserEmailDuplicated;
+import com.grupo11.exceptions.UserNotFoundException;
 import com.grupo11.mappers.InvestmentMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.UserRepository;
@@ -29,7 +30,8 @@ public class UserService {
     }
 
     public UserDto getUserById(Long id){
-        User user = repository.findById(id).get();
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         user.setPassword("******");
         return UserMapper.userToDto(user);
     }
