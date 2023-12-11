@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class User {
 
     @Id
@@ -35,12 +36,14 @@ public class User {
     @Column(name = "birthdate")
     private Date birthdate;
 
-    // Fecha de creación y modificación (estado) de cada usuarios
-    // TODO: Refactor
     private LocalDateTime created_at;
 
     private LocalDateTime updated_at;
 
-    //@OneToMany(mappedBy = "owner", cascade=CascadeType.ALL, orphanRemoval = true)
-    //private List<Account> accounts;
+    @OneToMany(mappedBy = "owner", cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Account> accounts;
+
+    public User(){
+        this.accounts = new ArrayList<>();
+    }
 }
