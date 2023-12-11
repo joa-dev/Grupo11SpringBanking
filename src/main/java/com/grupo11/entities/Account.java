@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +34,24 @@ public class Account {
     private LocalDateTime created_at;
     @Column(name = "fecha_modificacion")
     private LocalDateTime updated_at;
-   // @ManyToOne
-  //  @Column(name = "titular")
- //   private User owner;
-  //  @OneToMany(fetch = FetchType.EAGER,mappedBy = "origin",cascade=CascadeType.ALL, orphanRemoval = true)
- //   private List<Transfer> transfers;
-  //  @OneToMany(fetch = FetchType.LAZY,mappedBy = "investor",cascade=CascadeType.ALL, orphanRemoval = true)
-  //  private List<Investment> investments;
+
+    @ManyToOne
+    @JoinColumn(name = "titular")
+    private User owner;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account",cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Investment> investments;
+
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "origin",cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Transfer> transfersSent;
+
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "target",cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<Transfer> transfersReceived;
+
+
+    public Account(){
+        this.investments = new ArrayList<>();
+        this.transfersSent = new ArrayList<>();
+        this.transfersReceived = new ArrayList<>();
+    }
 }
