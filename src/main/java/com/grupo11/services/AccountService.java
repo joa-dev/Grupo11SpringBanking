@@ -4,9 +4,12 @@ import com.grupo11.entities.Account;
 import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.AccountDto;
 import com.grupo11.entities.enums.AccountType;
+import com.grupo11.exceptions.AccountNotFoundException;
+import com.grupo11.exceptions.UserNotFoundException;
 import com.grupo11.mappers.AccountMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.AccountRepository;
+import com.grupo11.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,9 +20,11 @@ import java.util.stream.Collectors;
 public class AccountService {
 
     private final AccountRepository repository;
+    private final UserRepository usersRepository;
 
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountRepository repository, UserRepository usersRepository) {
         this.repository = repository;
+        this.usersRepository = usersRepository;
     }
 
 
@@ -36,8 +41,12 @@ public class AccountService {
 
     public AccountDto createAccount(AccountDto dto) {
        // dto.setType(AccountType.CAJA_AHORRO_PESOS);
+        User usuario = usersRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + dto.getUserId()));
+
         dto.setAmount(BigDecimal.ZERO);
         Account newAccount = AccountMapper.dtoToAccount(dto);
+        newAccount.setOwner(usuario);
         return AccountMapper.accountToDto(repository.save(newAccount));
     }
 
