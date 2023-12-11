@@ -71,6 +71,13 @@ public class GlobalErrorHandler {
         response.setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> manejarUserNotFoundException(UserNotFoundException exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.NOT_FOUND);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object>manejarValidationErrors(MethodArgumentNotValidException error){
