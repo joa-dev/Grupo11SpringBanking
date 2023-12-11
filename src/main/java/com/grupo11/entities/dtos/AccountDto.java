@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AccountDto {
     private Long id;
+
+    @NotNull(message="Especifique un Id de usuario")
+    private Long userId;
+    private String userName;
+
     @NotNull(message="Especifique un tipo de cuenta")
     private AccountType type;
     @Pattern(regexp = "[0-9]{22}", message = "El cbu debe tener 22 números")
@@ -28,6 +34,11 @@ public class AccountDto {
     @Pattern(regexp = "[a-zA-Z0-9.]{3,20}", message = "El alias debe tener entre 3 y 20 caracteres y solo puede contener letras, números o puntos")
     private String alias;
     private BigDecimal amount;
+
+    private List<InvestmentDto> investments;
+    private List<TransferDto> transfersSent;
+    private List<TransferDto> transfersReceived;
+
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
