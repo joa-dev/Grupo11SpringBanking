@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +30,8 @@ public class UserDto {
     private String address;
     @Past(message = "La fecha de nacimiento debe ser anterior a la fecha actual")
     private Date birthdate;
+
+    private List<AccountDto> accounts;
 
     private LocalDateTime created_at;
 
