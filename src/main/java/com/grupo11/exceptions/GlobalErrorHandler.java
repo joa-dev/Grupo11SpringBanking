@@ -2,13 +2,16 @@ package com.grupo11.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalErrorHandler {
@@ -71,21 +74,31 @@ public class GlobalErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object>manejarValidationErrors(MethodArgumentNotValidException error){
-        List<FieldError> fieldErrors = error.getBindingResult().getFieldErrors();
+        //Definición del map para guardar: Campo - Descripcion error
+        Map<String,String> errores= new HashMap<>();
 
-        StringBuilder errorMessage = new StringBuilder("Errores de validación: ");
+        //Recorrer los errores y agregar a map
+        error.getBindingResult().getAllErrors().forEach((e)->{
+            String nombreCampo= ((FieldError)e).getField();
+            String mensaje=e.getDefaultMessage();
 
-        for (FieldError fieldError : fieldErrors) {
-            if (fieldError.getRejectedValue() != null) {
-                errorMessage.append("Campo '").append(fieldError.getField()).append("' con valor '")
-                        .append(fieldError.getRejectedValue()).append("': ");
-            } else {
-                errorMessage.append("Campo '").append(fieldError.getField()).append("': ");
-            }
-            errorMessage.append(fieldError.getDefaultMessage()).append(" ");
-        }
+            errores.put(nombreCampo,mensaje);
+        });
 
-        return ResponseEntity.badRequest().body(errorMessage);
+        //Generar Objeto de respuesta y retornarlo
+        ResponseValidationError listaErrores= new ResponseValidationError();
+        listaErrores.setError(HttpStatus.BAD_REQUEST);
+        listaErrores.setMessage("Revise los siguientes datos:");
+        listaErrores.setDetails(errores);
+        return new ResponseEntity<>(listaErrores,HttpStatus.BAD_REQUEST);
 
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> manejarHttpMessageNotReadableException(HttpMessageNotReadableException exception, WebRequest webRequest) {
+        ResponseExceptionEntity response = new ResponseExceptionEntity();
+        response.setError(HttpStatus.BAD_REQUEST);
+        response.setMessage(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
