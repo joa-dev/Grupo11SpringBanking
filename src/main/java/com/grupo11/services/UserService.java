@@ -1,9 +1,12 @@
 package com.grupo11.services;
 
+import com.grupo11.entities.Account;
 import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.UserDto;
+import com.grupo11.exceptions.AccountNotFoundException;
 import com.grupo11.exceptions.UserDniDuplicated;
 import com.grupo11.exceptions.UserEmailDuplicated;
+import com.grupo11.exceptions.UserNotFoundException;
 import com.grupo11.mappers.InvestmentMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.UserRepository;
@@ -29,7 +32,8 @@ public class UserService {
     }
 
     public UserDto getUserById(Long id){
-        User user = repository.findById(id).get();
+        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException("No se encontró el usuario con id: " + id));
+       // User user = repository.findById(id).get();
         user.setPassword("******");
         return UserMapper.userToDto(user);
     }
@@ -55,7 +59,7 @@ public class UserService {
             repository.deleteById(id);
             return "El usuario con id: " + id + " ha sido eliminado";
         } else {
-            return "El usuario con id: " + id + ", no ha sido eliminado";
+            throw new UserNotFoundException("No se encontró el usuario con id: " + id);
         }
     }
 
@@ -94,9 +98,9 @@ public class UserService {
             User userModified = repository.save(userToModify);
 
             return UserMapper.userToDto(userModified);
+        } else {
+            throw new UserNotFoundException("No se encontró el usuario con id: " + id);
         }
-
-        return null;
     }
 
     // Validar que existan usuarios unicos por mail
