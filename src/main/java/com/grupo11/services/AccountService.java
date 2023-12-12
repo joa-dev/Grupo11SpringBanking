@@ -4,6 +4,8 @@ import com.grupo11.entities.Account;
 import com.grupo11.entities.User;
 import com.grupo11.entities.dtos.AccountDto;
 import com.grupo11.entities.enums.AccountType;
+import com.grupo11.exceptions.AccountNotFoundException;
+import com.grupo11.exceptions.UserNotFoundException;
 import com.grupo11.mappers.AccountMapper;
 import com.grupo11.mappers.UserMapper;
 import com.grupo11.repositories.AccountRepository;
@@ -30,7 +32,7 @@ public class AccountService {
     }
 
     public AccountDto getAccountById(Long id) {
-        Account acc = repository.findById(id).get();
+        Account acc = repository.findById(id).orElseThrow(() -> new AccountNotFoundException("No se encontró la cuenta con id: " + id));
         return AccountMapper.accountToDto(acc);
     }
 
@@ -62,7 +64,7 @@ public class AccountService {
             return AccountMapper.accountToDto(accountModified);
 
         } else {
-            return null;
+            throw new AccountNotFoundException("No se encontró la cuenta con id: " + id);
         }
     }
 
@@ -71,7 +73,7 @@ public class AccountService {
             repository.deleteById(id);
             return "La cuenta con id: " + id + " ha sido eliminada";
         } else {
-            return "No se pudo eliminar la cuenta";
+            throw new AccountNotFoundException("No se encontró la cuenta con id: " + id);
         }
     }
 }
