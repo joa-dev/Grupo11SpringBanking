@@ -14,15 +14,7 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    // POR CADA ACCIÓN/METODO HTTP QUE USTEDES QUIERAN IMPLEMENTAR/PERMITIR
-    // VAN A TENER UN METODO EN SU CONTROLADOR
 
-    // METODOS HTTP PERMITIDOS:
-    // POST, GET (2), PUT, PATCH, DELETE
-
-    // Estructura de datos para REST: ResponseEntity<>
-
-    // Necesito obtener una instancia del servicio de usuarios
     @Autowired
     private UserService service;
 
